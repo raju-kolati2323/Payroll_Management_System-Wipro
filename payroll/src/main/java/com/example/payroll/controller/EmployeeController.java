@@ -91,26 +91,21 @@ public class EmployeeController {
 	    
 	    // get payroll details
 	    @GetMapping("/payroll/my/{year}/{month}")
-	    public ResponseEntity<?> getEmployeePayroll(Authentication authentication,
-	                                                @PathVariable int year,
-	                                                @PathVariable int month) {
+	    public ResponseEntity<?> getEmployeePayroll(Authentication authentication, @PathVariable int year,@PathVariable int month) {
 	        String username = authentication.getName();
 	        User user = userRepository.findByUsername(username);
 	        if (user == null) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-	                    .body(Map.of("message", "User not found"));
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "User not found"));
 	        }
 
 	        Employee employee = employeeRepository.findByUser(user);
 	        if (employee == null) {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-	                    .body(Map.of("message", "Employee not found"));
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Employee not found"));
 	        }
 
 	        List<Payroll> payrolls = payrollService.getEmployeePayrolls(employee.getEmployee_id(), year, month);
 	        return ResponseEntity.ok(payrolls);
 	    }
-
 
 	    private LeaveResponseDTO mapToResponseDTO(Leave leave) {
 	        LeaveResponseDTO dto = new LeaveResponseDTO();

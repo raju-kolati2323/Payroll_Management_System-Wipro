@@ -32,11 +32,10 @@ public class PayrollReportService {
         return summary;
     }
 
-    // Generate department-cost report
+    // get department-cost report
     public List<Map<String, Object>> getDepartmentCostReport(LocalDate startDate, LocalDate endDate) {
         List<Payroll> payrolls = payrollRepository.findByPayDateBetween(startDate, endDate);
 
-        // Group payrolls by department
         Map<Department, List<Payroll>> grouped = payrolls.stream()
                 .collect(Collectors.groupingBy(p -> p.getEmployee().getDepartment()));
 

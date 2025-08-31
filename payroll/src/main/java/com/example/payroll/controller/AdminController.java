@@ -3,6 +3,7 @@ package com.example.payroll.controller;
 import com.example.payroll.dto.*;
 import com.example.payroll.model.*;
 import com.example.payroll.repository.EmployeeRepository;
+import com.example.payroll.repository.PayrollRunRepository;
 import com.example.payroll.service.*;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,6 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,6 +43,9 @@ public class AdminController {
     
     @Autowired
     private PayrollService payrollService;
+    
+    @Autowired
+    private PayrollRunRepository payrollRunRepository;
     
     @Autowired
     private SalaryStructureService salaryStructureService;
@@ -122,7 +127,7 @@ public class AdminController {
  //SALARY STRUCTURE
     
     // get salary structure of a specific employee
-    @GetMapping("/employees/{id}/salary-structure")
+    @GetMapping("/employees/{id}/salary-structures")
     public ResponseEntity<?> getSalaryStructure(@PathVariable Long id) {
         try {
             SalaryStructure salaryStructure = salaryStructureService.getSalaryStructureByEmployeeId(id);
@@ -134,7 +139,7 @@ public class AdminController {
     
 
     // create or update new salary-structure to an employee
-    @PostMapping("/employees/{id}/salary-structure")
+    @PostMapping("/employees/{id}/salary-structures")
     public ResponseEntity<?> createOrUpdateSalaryStructure(@PathVariable Long id, @RequestBody SalaryStructureDTO salaryStructureDTO) {
         try {
             Employee employee = employeeRepository.findById(id)
@@ -287,6 +292,13 @@ public class AdminController {
         PayrollRun payrollRun = payrollService.createPayrollRun(year, month);
         return ResponseEntity.status(HttpStatus.CREATED).body(payrollRun);
     }
+    
+    //get all payroll runs
+    @GetMapping("/payroll/runs")
+    public ResponseEntity<?> getAllPayrollRuns() {
+        List<PayrollRun> runs = payrollRunRepository.findAll(Sort.by(Sort.Direction.DESC, "runDate"));
+        return ResponseEntity.ok(runs);
+    }
 
     //process a payroll run
     @PostMapping("/payroll/runs/{id}/process")
@@ -356,4 +368,5 @@ public class AdminController {
         LocalDate toDate = LocalDate.of(toYear, toMonth, 1);
         return (int) ChronoUnit.MONTHS.between(fromDate, toDate) + 1;
     }
+
 }
