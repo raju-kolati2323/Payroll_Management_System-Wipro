@@ -130,3 +130,15 @@ The **Payroll Management System** provides seamless management of employee data,
 It ensures **security** through role-based access, **encrypted passwords**, and **JWT authentication**.  
 - **Admins:** Full control over payroll, employee data, and reporting.  
 - **Employees:** Manage profiles, leave requests, and view payroll info.  
+
+---
+
+## 8. Login Access based on ROLES:
+
+### Admin
+- **Username:** `admin1`  
+- **Password:** `password`  
+
+### Employee
+- **Username:** `employee1`  
+- **Password:** `password`  
