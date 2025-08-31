@@ -3,7 +3,6 @@ package com.example.payroll.config;
 import com.example.payroll.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,13 +25,29 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/users").hasRole("ADMIN")
+
+                .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
                 .requestMatchers("/api/v1/users/me").authenticated()
+
+                .requestMatchers("/api/v1/employees/**").hasAnyRole("ADMIN", "EMPLOYEE")
+                
+                .requestMatchers("/api/v1/departments/**").hasRole("ADMIN")
+
+                .requestMatchers("/api/v1/jobs/**").hasRole("ADMIN")                
+
+                .requestMatchers("/api/v1/payroll/**").hasAnyRole("ADMIN", "EMPLOYEE")
+
+                .requestMatchers("/api/v1/payroll/runs/**").hasRole("ADMIN")
+                .requestMatchers("/api/v1/payroll/my/**").hasRole("EMPLOYEE")
+
+                .requestMatchers("/api/v1/leaves/**").hasAnyRole("ADMIN", "EMPLOYEE")
+
+                .requestMatchers("/api/v1/reports/**").hasRole("ADMIN")
+                
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
 
         return http.build();
     }
