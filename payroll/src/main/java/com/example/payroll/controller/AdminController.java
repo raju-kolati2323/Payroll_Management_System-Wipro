@@ -87,8 +87,7 @@ public class AdminController {
     @GetMapping("/employees")
     public ResponseEntity<?> getAllEmployees() {
         try {
-            List<Employee> employees = employeeService.getEmployees();
-            
+            List<Employee> employees = employeeService.getEmployees();            
             employees.forEach(employee -> {
                 if (employee.getUser() != null) {
                     employee.getUser().setPassword(null);
@@ -101,7 +100,7 @@ public class AdminController {
     }
     
     
- // Create a new employee record
+ // Create a new employee
     @PostMapping("/employees")
     public ResponseEntity<?> createEmployee(@RequestBody EmployeeDataDTO employeeData) {
         try {
@@ -124,7 +123,7 @@ public class AdminController {
     }
     
     
- //SALARY STRUCTURE
+    //SALARY STRUCTURE
     
     // get salary structure of a specific employee
     @GetMapping("/employees/{id}/salary-structures")
@@ -137,13 +136,11 @@ public class AdminController {
         }
     }
     
-
-    // create or update new salary-structure to an employee
+    // create or assign new salary-structure to an employee
     @PostMapping("/employees/{id}/salary-structures")
     public ResponseEntity<?> createOrUpdateSalaryStructure(@PathVariable Long id, @RequestBody SalaryStructureDTO salaryStructureDTO) {
         try {
-            Employee employee = employeeRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Employee not found"));
+            Employee employee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
 
             SalaryStructure salaryStructure = salaryStructureService.createOrUpdateSalaryStructure(employee, salaryStructureDTO);
             return ResponseEntity.ok(salaryStructure);
@@ -211,6 +208,7 @@ public class AdminController {
         return ResponseEntity.ok(jobRoles);
     }
 
+    //create job
     @PostMapping("/jobs")
     public ResponseEntity<?> createJobRole(@RequestBody JobRoleRequestDTO jobRoleDTO) {
         try {
@@ -220,7 +218,8 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
         }
     }
-
+    
+    //update job
     @PutMapping("/jobs/{id}")
     public ResponseEntity<?> updateJobRole(@PathVariable Long id, @RequestBody JobRoleRequestDTO jobRoleDTO) {
         try {
@@ -231,6 +230,7 @@ public class AdminController {
         }
     }
 
+    //delete job(only if no employee is linked)
     @DeleteMapping("/jobs/{id}")
     public ResponseEntity<?> deleteJobRole(@PathVariable Long id) {
         try {
@@ -350,7 +350,6 @@ public class AdminController {
             Map<Long, Double> departmentCost = new HashMap<>();
             List<Employee> employees = employeeRepository.findAll();
 
-            // Calculate salary for the number of months between the given range
             int monthsDifference = calculateMonthDifference(fromYear, fromMonth, toYear, toMonth);
             for (Employee employee : employees) {
                 double totalSalary = employee.getSalary() * monthsDifference;
@@ -362,7 +361,7 @@ public class AdminController {
         }
     }
 
-    // Calculate month difference between two dates
+    //calculate month difference between two dates
     private int calculateMonthDifference(int fromYear, int fromMonth, int toYear, int toMonth) {
         LocalDate fromDate = LocalDate.of(fromYear, fromMonth, 1);
         LocalDate toDate = LocalDate.of(toYear, toMonth, 1);

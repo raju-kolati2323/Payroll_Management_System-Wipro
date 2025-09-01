@@ -12,7 +12,6 @@ public interface PayrollRepository extends JpaRepository<Payroll, Long> {
     List<Payroll> findByEmployee(Employee employee);
     List<Payroll> findByEmployeeAndPayDateBetween(Employee employee, LocalDate startDate, LocalDate endDate);
     List<Payroll> findByPayrollRun(PayrollRun payrollRun);
-    
     List<Payroll> findByPayDateBetween(LocalDate startDate, LocalDate endDate);
 
 }

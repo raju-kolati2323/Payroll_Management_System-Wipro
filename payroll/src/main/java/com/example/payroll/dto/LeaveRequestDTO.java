@@ -10,7 +10,6 @@ public class LeaveRequestDTO {
     private Date endDate;
     private LeaveType leaveType;
 
-    // Getters and setters
     public Date getStartDate() {
         return startDate;
     }

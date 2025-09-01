@@ -21,14 +21,11 @@ public class SalaryStructureService {
 
     // get salary structure of specific employee
     public SalaryStructure getSalaryStructureByEmployeeId(Long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + employeeId));
-
-        return salaryStructureRepository.findByEmployee(employee)
-                .orElseThrow(() -> new RuntimeException("Salary Structure not found for employee with ID: " + employeeId));
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new RuntimeException("Employee not found with ID: " + employeeId));
+        return salaryStructureRepository.findByEmployee(employee).orElseThrow(() -> new RuntimeException("Salary Structure not found for employee with ID: " + employeeId));
     }
 
-    // Create or update salary structure
+    // create or assign new salary structure
     public SalaryStructure createOrUpdateSalaryStructure(Employee employee, SalaryStructureDTO salaryStructureDTO) {
         Optional<SalaryStructure> existingSalaryStructureOptional = salaryStructureRepository.findByEmployee(employee);
 

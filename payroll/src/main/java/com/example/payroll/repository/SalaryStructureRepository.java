@@ -8,6 +8,5 @@ import com.example.payroll.model.Employee;
 import com.example.payroll.model.SalaryStructure;
 
 public interface SalaryStructureRepository extends JpaRepository<SalaryStructure, Long> {
-
     Optional<SalaryStructure> findByEmployee(Employee employee);
 }

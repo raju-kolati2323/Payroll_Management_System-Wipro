@@ -32,8 +32,6 @@ public class User {
     @Column(nullable = false)
     private boolean active = true;
     
-    
-
 	public Long getUser_id() {
 		return user_id;
 	}

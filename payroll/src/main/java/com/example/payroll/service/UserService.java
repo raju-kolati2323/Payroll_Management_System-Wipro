@@ -16,7 +16,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Create new user
+    // create new user
     public User createUser(User user) {
         if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new RuntimeException("Username already exists");
@@ -32,10 +32,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // update user - active status
+    // update user-active status
     public User updateUserStatus(Long userId, boolean active) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         user.setActive(active);
         return userRepository.save(user);
     }

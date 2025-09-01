@@ -28,7 +28,7 @@ public class EmployeeService {
 	@Autowired
     private JobRoleRepository jobRoleRepository;
 	
-	// Get all employees
+	// get all employees
 	public List<Employee> getEmployees() {
 	    List<Employee> employees = employeeRepository.findAll();
 	    if (employees.isEmpty()) {
@@ -37,21 +37,18 @@ public class EmployeeService {
 	    return employees;
 	}
     
- // Create new employee
+	// create new employee
     public Employee createEmployee(EmployeeDataDTO employeeData) {
         Department department = departmentRepository.findById(employeeData.getDepartmentId())
                 .orElseThrow(() -> new RuntimeException("Department not found with id: " + employeeData.getDepartmentId()));
 
         String designationNormalized = employeeData.getDesignation().toLowerCase().trim();
-
         Optional<JobRole> jobRoleOpt = jobRoleRepository.findByJobroleAndDepartment(designationNormalized, department);
-
         if (jobRoleOpt.isEmpty()) {
             throw new RuntimeException("Job role '" + employeeData.getDesignation() + "' not found in department with id: " + employeeData.getDepartmentId());
         }
 
-        User user = userRepository.findById(employeeData.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + employeeData.getUserId()));
+        User user = userRepository.findById(employeeData.getUserId()).orElseThrow(() -> new RuntimeException("User not found with id: " + employeeData.getUserId()));
 
         Employee employee = new Employee();
         employee.setUser(user);
@@ -68,24 +65,18 @@ public class EmployeeService {
     }
 
 
-    // Update employee by id
+    // update employee by id
     public Employee updateEmployee(Long employeeId, EmployeeDataDTO employeeData) {
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + employeeId));
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new RuntimeException("Employee not found with id: " + employeeId));
 
-        Department department = departmentRepository.findById(employeeData.getDepartmentId())
-                .orElseThrow(() -> new RuntimeException("Department not found with id: " + employeeData.getDepartmentId()));
+        Department department = departmentRepository.findById(employeeData.getDepartmentId()).orElseThrow(() -> new RuntimeException("Department not found with id: " + employeeData.getDepartmentId()));
 
         String designationNormalized = employeeData.getDesignation().toLowerCase().trim();
-
         Optional<JobRole> jobRoleOpt = jobRoleRepository.findByJobroleAndDepartment(designationNormalized, department);
-
         if (jobRoleOpt.isEmpty()) {
             throw new RuntimeException("Job role '" + employeeData.getDesignation() + "' not found in department with id: " + employeeData.getDepartmentId());
         }
-
-        User user = userRepository.findById(employeeData.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + employeeData.getUserId()));
+        User user = userRepository.findById(employeeData.getUserId()).orElseThrow(() -> new RuntimeException("User not found with id: " + employeeData.getUserId()));
 
         employee.setUser(user);
         employee.setDepartment(department);

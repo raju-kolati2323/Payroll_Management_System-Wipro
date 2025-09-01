@@ -9,7 +9,6 @@ public class SalaryStructureDTO {
     private Double salaryDeductionPerDay;
     private Double bonusAmount;
 
-
     public Long getEmployeeId() {
         return employeeId;
     }

@@ -57,7 +57,7 @@ public class CommonController {
         }
     }
     
-    //get logged-in employee details // get employee by id (for admin)
+    //get logged-in employee details & get employee by id (for admin)
     @PreAuthorize("hasRole('ADMIN') or @employeeSecurity.isSelf(#id)")
     @GetMapping("/employees/{id}")
     public ResponseEntity<?> getEmployee(@PathVariable Long id) {

@@ -18,7 +18,7 @@ public class LeaveService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    // Request Leave
+    // request leave
     public Leave requestLeave(Long employeeId, LeaveRequestDTO leaveRequestDTO) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new RuntimeException("Employee not found"));
 
@@ -32,22 +32,21 @@ public class LeaveService {
         return leaveRepository.save(leave);
     }
 
-    // Approve or Reject Leave
+    // approve or reject leave
     public Leave approveOrRejectLeave(Long leaveId, LeaveStatus status) {
         Leave leave = leaveRepository.findById(leaveId).orElseThrow(() -> new RuntimeException("Leave request not found"));
         leave.setStatus(status);
         return leaveRepository.save(leave);
     }
 
-    // Get all pending leave requests
+    // get all pending leave requests
     public List<Leave> getPendingLeaveRequests() {
         return leaveRepository.findByStatus(LeaveStatus.PENDING);
     }
 
-    // Get all leave requests for an employee
+    // get all requested leaves for employees
     public List<Leave> getLeavesByEmployee(Long employeeId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new RuntimeException("Employee not found"));
-
         return leaveRepository.findByEmployee(employee);
     }
 }

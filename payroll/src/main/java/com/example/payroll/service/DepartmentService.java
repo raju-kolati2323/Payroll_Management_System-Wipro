@@ -17,7 +17,7 @@ public class DepartmentService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    // Retrieve all departments
+    // get all departments
     public List<Department> getAllDepartments() {
         List<Department> departments = departmentRepository.findAll();
         if (departments.isEmpty()) {
@@ -26,28 +26,24 @@ public class DepartmentService {
         return departments;
     }
 
-    // Create a new department
+    // create a new department
     public Department createDepartment(Department department) {
         return departmentRepository.save(department);
     }
 
-    // Update an existing department
+    // update department
     public Department updateDepartment(Long departmentId, Department departmentDetails) {
-        Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new RuntimeException("Department not found with id: " + departmentId));
+        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new RuntimeException("Department not found with id: " + departmentId));
         department.setName(departmentDetails.getName());
         return departmentRepository.save(department);
     }
 
-    // Delete a department if not linked with any employees
+    // delete department if not linked with any employeess
     public String deleteDepartment(Long departmentId) {
-        Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new RuntimeException("Department not found with id: " + departmentId));
-
-        if (employeeRepository.existsByDepartment(department)) {
+        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new RuntimeException("Department not found with id: " + departmentId));
+       if (employeeRepository.existsByDepartment(department)) {
             return "Department is linked with employees, so it cannot be deleted. Please unlink all employees first.";
         }
-
         departmentRepository.delete(department);
         return "Department deleted successfully.";
     }

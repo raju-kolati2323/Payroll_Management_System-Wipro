@@ -36,8 +36,7 @@ public class PayrollReportService {
     public List<Map<String, Object>> getDepartmentCostReport(LocalDate startDate, LocalDate endDate) {
         List<Payroll> payrolls = payrollRepository.findByPayDateBetween(startDate, endDate);
 
-        Map<Department, List<Payroll>> grouped = payrolls.stream()
-                .collect(Collectors.groupingBy(p -> p.getEmployee().getDepartment()));
+        Map<Department, List<Payroll>> grouped = payrolls.stream().collect(Collectors.groupingBy(p -> p.getEmployee().getDepartment()));
 
         List<Map<String, Object>> report = new ArrayList<>();
 

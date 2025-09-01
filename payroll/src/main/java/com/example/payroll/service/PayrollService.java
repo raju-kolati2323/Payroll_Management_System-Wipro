@@ -26,7 +26,7 @@ public class PayrollService {
     private PayrollRunRepository payrollRunRepository;
 
     
-    //Creates a payroll run
+    //creates a payroll run
     @Transactional
     public PayrollRun createPayrollRun(int year, int month) {
         LocalDate runDate = LocalDate.of(year, month, 1);
@@ -70,15 +70,13 @@ public class PayrollService {
 
             payrollRepository.save(payroll);
         }
-
         return payrollRun;
     }
 
     // process payroll run
     @Transactional
     public void processPayrollRun(Long payrollRunId) {
-        PayrollRun run = payrollRunRepository.findById(payrollRunId)
-                .orElseThrow(() -> new RuntimeException("Payroll run not found"));
+        PayrollRun run = payrollRunRepository.findById(payrollRunId).orElseThrow(() -> new RuntimeException("Payroll run not found"));
 
         if (run.isLocked()) throw new RuntimeException("Payroll run is locked");
 
@@ -90,11 +88,10 @@ public class PayrollService {
         }
     }
 
-    // Process an individual payroll to use above
+    // process an individual payroll run
     @Transactional
     public Payroll processPayroll(Long payrollId) {
-        Payroll payroll = payrollRepository.findById(payrollId)
-                .orElseThrow(() -> new RuntimeException("Payroll not found"));
+        Payroll payroll = payrollRepository.findById(payrollId).orElseThrow(() -> new RuntimeException("Payroll not found"));
 
         if (payroll.isLocked()) throw new RuntimeException("Payroll is locked");
 
@@ -104,7 +101,6 @@ public class PayrollService {
         double basicSalary = salaryOpt.map(SalaryStructure::getEmployeeSalary).orElse(employee.getSalary());
         double taxPercent = salaryOpt.map(ss -> ss.getTaxPercentage() != null ? ss.getTaxPercentage() : 0.0).orElse(0.0);
         double bonus = salaryOpt.map(ss -> ss.getBonusAmount() != null ? ss.getBonusAmount() : 0.0).orElse(0.0);
-
         double leaveDeduction = 0.0;
         double taxDeduction = basicSalary * taxPercent / 100;
         double totalDeductions = leaveDeduction + taxDeduction;
@@ -117,14 +113,11 @@ public class PayrollService {
         return payrollRepository.save(payroll);
     }
 
-    // Lock a payroll run
+    // lock a payroll run
     @Transactional
     public void lockPayrollRun(Long payrollRunId) {
-        PayrollRun run = payrollRunRepository.findById(payrollRunId)
-                .orElseThrow(() -> new RuntimeException("Payroll run not found"));
-
+        PayrollRun run = payrollRunRepository.findById(payrollRunId).orElseThrow(() -> new RuntimeException("Payroll run not found"));
         if (run.isLocked()) throw new RuntimeException("Payroll run already locked");
-
         run.setLocked(true);
         payrollRunRepository.save(run);
 
@@ -135,10 +128,9 @@ public class PayrollService {
         });
     }
 
-    // Get payroll run
+    // get payroll run
     public List<Payroll> getPayrollRunItems(Long payrollRunId) {
-        PayrollRun run = payrollRunRepository.findById(payrollRunId)
-                .orElseThrow(() -> new RuntimeException("Payroll run not found"));
+        PayrollRun run = payrollRunRepository.findById(payrollRunId).orElseThrow(() -> new RuntimeException("Payroll run not found"));
         return payrollRepository.findByPayrollRun(run);
     }
     
@@ -146,9 +138,7 @@ public class PayrollService {
  // get payrolls for a given month/year for an employe
     @Transactional(readOnly = true)
     public List<Payroll> getEmployeePayrolls(Long employeeId, int year, int month) {
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new RuntimeException("Employee not found"));
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 

@@ -13,7 +13,6 @@ public class EmployeeDataDTO {
     private Long userId;	
     private Long departmentId;
     
-
     public Long getUserId() {
 		return userId;
 	}
@@ -26,24 +25,53 @@ public class EmployeeDataDTO {
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
 	}
-	public String getFirst_name() { return first_name; }
-    public void setFirst_name(String first_name) { this.first_name = first_name; }
+	
+	public String getFirst_name() { 
+		return first_name; 
+	}
+    public void setFirst_name(String first_name) { 
+    	this.first_name = first_name; 
+    }
 
-    public String getLast_name() { return last_name; }
-    public void setLast_name(String last_name) { this.last_name = last_name; }
+    public String getLast_name() { 
+    	return last_name; 
+    }
+    public void setLast_name(String last_name) { 
+    	this.last_name = last_name; 
+    }
 
-    public Date getDob() { return dob; }
-    public void setDob(Date dob) { this.dob = dob; }
+    public Date getDob() { 
+    	return dob; 
+    }
+    public void setDob(Date dob) { 
+    	this.dob = dob; 
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public String getPhone() { 
+    	return phone; 
+    }
+    public void setPhone(String phone) { 
+    	this.phone = phone; 
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public String getAddress() { 
+    	return address; 
+    }
+    public void setAddress(String address) { 
+    	this.address = address; 
+    }
 
-    public String getDesignation() { return designation; }
-    public void setDesignation(String designation) { this.designation = designation; }
+    public String getDesignation() { 
+    	return designation; 
+    }
+    public void setDesignation(String designation) { 
+    	this.designation = designation; 
+    }
 
-    public Double getSalary() { return salary; }
-    public void setSalary(Double salary) { this.salary = salary; }
+    public Double getSalary() { 
+    	return salary; 
+    }
+    public void setSalary(Double salary) { 
+    	this.salary = salary; 
+    }
 }

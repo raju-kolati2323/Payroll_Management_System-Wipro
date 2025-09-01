@@ -16,7 +16,6 @@ public class LeaveResponseDTO {
     private LeaveType leaveType;
     private LeaveStatus status;
 
-    // Getters and Setters
     public Long getLeaveId() {
         return leaveId;
     }

@@ -37,9 +37,7 @@ public class JobRoleService {
 
     //create jobrole
     public JobRole createJobRole(JobRoleRequestDTO dto) {
-        Department department = departmentRepository.findById(dto.getDepartmentId())
-                .orElseThrow(() -> new RuntimeException("Department not found"));
-
+        Department department = departmentRepository.findById(dto.getDepartmentId()).orElseThrow(() -> new RuntimeException("Department not found"));
         JobRole jobRole = new JobRole();
         jobRole.setJobrole(dto.getJobrole());
         jobRole.setDepartment(department);
@@ -48,11 +46,8 @@ public class JobRoleService {
 
     //update job role
     public JobRole updateJobRole(Long id, JobRoleRequestDTO dto) {
-        JobRole jobRole = jobRoleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("JobRole not found with id: " + id));
-
-        Department department = departmentRepository.findById(dto.getDepartmentId())
-                .orElseThrow(() -> new RuntimeException("Department not found"));
+        JobRole jobRole = jobRoleRepository.findById(id).orElseThrow(() -> new RuntimeException("JobRole not found with id: " + id));
+        Department department = departmentRepository.findById(dto.getDepartmentId()).orElseThrow(() -> new RuntimeException("Department not found"));
 
         jobRole.setJobrole(dto.getJobrole());
         jobRole.setDepartment(department);
@@ -61,13 +56,10 @@ public class JobRoleService {
 
     //delete job role
     public void deleteJobRole(Long id) {
-        JobRole jobRole = jobRoleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("JobRole not found with id: " + id));
-
+        JobRole jobRole = jobRoleRepository.findById(id).orElseThrow(() -> new RuntimeException("JobRole not found with id: " + id));
         List<Employee> employees = employeeRepository.findByDesignationAndDepartment(
                 jobRole.getJobrole().toLowerCase().trim(),
                 jobRole.getDepartment());
-
         if (!employees.isEmpty()) {
             throw new RuntimeException("This job role is linked with employees and cannot be deleted. Please unlink them first.");
         }
