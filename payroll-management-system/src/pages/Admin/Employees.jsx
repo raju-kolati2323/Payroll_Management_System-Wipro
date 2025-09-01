@@ -46,7 +46,7 @@ const Employees = () => {
     }
     catch (error) {
       console.error("Failed to update user status:", error);
-      alert("Failed to update status. Please try again.");
+      toast.error("Failed to update status. Please try again.");
     }
   };
 

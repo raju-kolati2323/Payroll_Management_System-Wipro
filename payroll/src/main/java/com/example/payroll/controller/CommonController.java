@@ -50,7 +50,7 @@ public class CommonController {
             if (employee == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Employee not found for this user"));
             }
-            return ResponseEntity.ok(employee);
+            return ResponseEntity. ok(employee);
 
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", ex.getMessage()));

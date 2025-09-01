@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Login from './pages/Auth/Login'
@@ -16,6 +16,18 @@ import Payroll from './pages/Admin/Payroll'
 import ELeaves from './pages/Employee/ELeaves'
 import EPayroll from './pages/Employee/EPayroll'
 
+const ProtectedRoute = ({ isLoggedIn, allowedRoles, userRole }) => {
+  if (!isLoggedIn) {
+    toast.error("Please login first.");
+    return <Navigate to="/" />;
+  }
+  if (!allowedRoles.includes(userRole)) {
+    toast.error(`${userRole} have no access to that page`);
+    return <Navigate to={`/${userRole?.toLowerCase()}/dashboard`} />;
+  }
+  return <Outlet />;
+};
+
 function App() {
   const [userRole, setUserRole] = useState(localStorage.getItem('role'));
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
@@ -31,53 +43,40 @@ function App() {
     localStorage.removeItem('user');
     setUserRole(null);
     setIsLoggedIn(false);
-    toast.success("Logout success!")
   };
 
   const renderNavbar = () => {
-    if (isLoggedIn) {
-      switch (userRole) {
-        case 'ADMIN':
-          return <AdminNavbar onLogout={handleLogout} />;
-        case 'EMPLOYEE':
-          return <EmployeeNavbar onLogout={handleLogout} />;
-      }
-    }
+    if (isLoggedIn && userRole === 'ADMIN') return <AdminNavbar onLogout={handleLogout} />;
+    if (isLoggedIn && userRole === 'EMPLOYEE') return <EmployeeNavbar onLogout={handleLogout} />;
   };
 
   return (
     <div>
       {renderNavbar()}
-
       <Routes>
-        <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
-
-        {isLoggedIn ? (
-          <>
-            {userRole === 'ADMIN' && (
-              <>
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/employees" element={<Employees />} />
-              <Route path="/admin/departments" element={<Departments />} />
-              <Route path="/admin/jobs" element={<Jobs />} />
-              <Route path="/admin/leaves" element={<Leaves />} />
-              <Route path="/admin/payroll" element={<Payroll />} />
-              </>
-            )}  
-            {userRole === 'EMPLOYEE' && (
-              <>
-              <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
-              <Route path="/employee/leaves" element={<ELeaves />} />
-              <Route path="/employee/payroll" element={<EPayroll />} />
-              </>
-            )}
-          </>
-        ) : (
-          <Route path="*" element={<Login onLoginSuccess={handleLoginSuccess} />} />
-        )}
+        <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} onVisitLogin={handleLogout} />} />
+        <Route path="/admin" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ADMIN']} userRole={userRole} />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="employees" element={<Employees />} />
+          <Route path="departments" element={<Departments />} />
+          <Route path="jobs" element={<Jobs />} />
+          <Route path="leaves" element={<Leaves />} />
+          <Route path="payroll" element={<Payroll />} />
+        </Route>
+        <Route path="/employee" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['EMPLOYEE']} userRole={userRole} />}>
+          <Route path="dashboard" element={<EmployeeDashboard />} />
+          <Route path="leaves" element={<ELeaves />} />
+          <Route path="payroll" element={<EPayroll />} />
+        </Route>
+        <Route
+          path="*" element={
+            isLoggedIn ? (
+              <Navigate to={`/${userRole.toLowerCase()}/dashboard`} />
+            ) : (
+              <Navigate to="/" onVisitLogin={handleLogout} />
+            )} />
       </Routes>
-
-      <Footer/>
+      <Footer />
 
       <ToastContainer position="top-right" autoClose={2000} />
     </div>

@@ -281,7 +281,7 @@ const Payroll = () => {
       {payrollSummary && (
         <div className="alert alert-info">
           <h5>Payroll Summary</h5>
-          <p><strong>Total Payroll:</strong> ₹{payrollSummary.totalPayroll.toLocaleString()}</p>
+          <p><strong>Total Payroll:</strong> &#8377;{payrollSummary.totalPayroll.toLocaleString()}</p>
           <p><strong>Employee Count:</strong> {payrollSummary.employeeCount}</p>
         </div>
       )}
@@ -293,7 +293,7 @@ const Payroll = () => {
             {Object.entries(departmentCosts).map(([deptId, cost]) => (
               <li key={deptId} className="list-group-item d-flex justify-content-between">
                 <span><strong>Department ID:</strong> {deptId}</span>
-                <span><strong>Cost:</strong> ₹{cost.toLocaleString()}</span>
+                <span><strong>Cost:</strong> &#8377;{cost.toLocaleString()}</span>
               </li>
             ))}
           </ul>

@@ -87,7 +87,7 @@ const EmployeeDashboard = () => {
               <p><strong>Address:</strong> {employee.address}</p>
               <p><strong>Department:</strong> {employee.department?.name}</p>
               <p><strong>Designation:</strong> {employee.designation}</p>
-              <p><strong>Monthly Salary:</strong> ₹{employee.salary}</p>
+              <p><strong>Monthly Salary:</strong> &#8377;{employee.salary}</p>
             </div>
 
             <div className="col-md-6">

@@ -18,7 +18,7 @@ const Departments = () => {
       const { data } = await axios.get(`${BASE_URL}/departments`, { headers });
       setDepartments(data);
     } catch (error) {
-      alert('Failed to fetch departments');
+      toast.error('Failed to fetch departments');
     }
   };
 
@@ -67,10 +67,10 @@ const Departments = () => {
     if (window.confirm('Are you sure you want to delete this department?')) {
       try {
         await axios.delete(`${BASE_URL}/departments/${id}`, { headers });
-        alert('Department deleted');
+        toast.success('Department deleted');
         fetchDepartments();
       } catch (error) {
-        alert(error.response?.data?.message || 'Delete failed');
+        toast.error(error.response?.data?.message || 'Delete failed');
       }
     }
   };
