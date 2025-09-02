@@ -17,9 +17,9 @@ const CreateEmployeeModal = ({ onHide, refresh }) => {
     const userFormik = useFormik({
         initialValues: { username: '', email: '', password: '', role: 'EMPLOYEE' },
         validationSchema: Yup.object({
-            username: Yup.string().required('Required'),
+            username: Yup.string().min(6, "Mininum 6 characters required").required('Username is required'),
             email: Yup.string().email('Invalid email').required('Required'),
-            password: Yup.string().min(6).required('Required'),
+            password: Yup.string().min(6, "Mininum 6 characters required").required('Password is required'),
             role: Yup.string().required('Required'),
         }),
         onSubmit: async (values) => {

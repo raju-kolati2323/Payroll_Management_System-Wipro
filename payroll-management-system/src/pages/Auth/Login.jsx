@@ -10,8 +10,8 @@ const Login = ({ onLoginSuccess }) => {
     const formik = useFormik({
         initialValues: { username: '', password: '' },
         validationSchema: Yup.object({
-            username: Yup.string().required("Username is required"),
-            password: Yup.string().min(6, "Min 6 characters").required("Password is required")
+            username: Yup.string().min(6, "Mininum 6 characters required").required("Username is required"),
+            password: Yup.string().min(6, "Min 6 characters required").required("Password is required")
         }),
         onSubmit: async (values) => {
             try {
