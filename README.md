@@ -1,7 +1,7 @@
 # Payroll Management System
 
 ## 1. Introduction
-The **Payroll Management System** is a web application designed to automate employee payroll, leave management, and reporting tasks.  
+The **Payroll Management System** is a web application designed to automate employee payroll, leave management.  
 The system offers **role-based access control** with two main roles: **Admin** and **Employee**.  
 It ensures secure operations using **JWT (JSON Web Tokens)** for authentication.
 
@@ -12,7 +12,7 @@ It ensures secure operations using **JWT (JSON Web Tokens)** for authentication.
 ---
 
 ## 2. Overview
-This system provides a secure, efficient platform for managing employee payrolls, leave requests, departments, job roles, and reports.
+This system provides a secure, efficient platform for managing employee payrolls, leave requests, departments, job roles, and payroll reports.
 
 ### 2.1 Authentication
 - **Login:** Users log in with username & password -> receive JWT token.  
