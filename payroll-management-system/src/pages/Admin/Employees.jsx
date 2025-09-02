@@ -3,6 +3,7 @@ import axios from 'axios';
 import CreateEmployeeModal from './CreateEmployeeModal';
 import EditEmployeeModal from './EditEmployeeModal';
 import { toast } from 'react-toastify';
+import { FaRegUserCircle } from 'react-icons/fa';
 
 const token = localStorage.getItem('token');
 const headers = { Authorization: `Bearer ${token}` };
@@ -72,6 +73,7 @@ const Employees = () => {
           + Add Employee
         </button>
       </div>
+      <div className="table-responsive">
       <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr align="center">
@@ -82,7 +84,7 @@ const Employees = () => {
             <th>DOB</th>
             <th>Department</th>
             <th>Designation</th>
-            <th>Status</th>
+            <th>Salary</th>
             <th>Active Status</th>
             <th>Actions</th>
           </tr>
@@ -112,6 +114,7 @@ const Employees = () => {
           ))}
         </tbody>
       </table>
+      </div>
 
       {showCreateModal && <CreateEmployeeModal onHide={() => setShowCreateModal(false)} refresh={fetchEmployees} />}
       {showDetailModal && selectedEmployee && (
@@ -120,7 +123,7 @@ const Employees = () => {
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h4 className="modal-title">Employee Details</h4>
+                  <h4 className="modal-title"><FaRegUserCircle size={30} style={{ marginRight: '8px' }} />Employee Details</h4>
                   <button type="button" className="btn-close" onClick={() => setShowDetailModal(false)}></button>
                 </div>
                 <div className="modal-body">

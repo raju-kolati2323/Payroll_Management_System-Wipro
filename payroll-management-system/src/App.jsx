@@ -18,7 +18,7 @@ import EPayroll from './pages/Employee/EPayroll'
 
 const ProtectedRoute = ({ isLoggedIn, allowedRoles, userRole }) => {
   if (!isLoggedIn) {
-    toast.error("Please login first.");
+    toast.info("Please login to access.");
     return <Navigate to="/" />;
   }
   if (!allowedRoles.includes(userRole)) {
@@ -43,6 +43,7 @@ function App() {
     localStorage.removeItem('user');
     setUserRole(null);
     setIsLoggedIn(false);
+    toast.success("Logout success")
   };
 
   const renderNavbar = () => {

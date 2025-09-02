@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "leaves")
 public class Leave {
 
-	 @Id
+	 	@Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long leaveId;
 
@@ -24,7 +24,7 @@ public class Leave {
 	    private Date startDate;
 
 	    @Temporal(TemporalType.DATE)
-	    private Date endDate;  // Optional
+	    private Date endDate;
 
 	    @Enumerated(EnumType.STRING)
 	    @Column(nullable = false)

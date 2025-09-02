@@ -4,12 +4,8 @@ import axios from 'axios'
 import FormInput from '../../components/FormInput'
 import { toast } from 'react-toastify'
 import { FaRegUserCircle } from "react-icons/fa";
-import { useEffect } from 'react'
 
-const Login = ({ onLoginSuccess, onVisitLogin }) => {
-    useEffect(() => {
-        onVisitLogin();
-    }, []);
+const Login = ({ onLoginSuccess }) => {
 
     const formik = useFormik({
         initialValues: { username: '', password: '' },

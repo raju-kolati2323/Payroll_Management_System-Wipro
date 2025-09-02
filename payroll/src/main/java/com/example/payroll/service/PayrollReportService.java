@@ -57,7 +57,6 @@ public class PayrollReportService {
 
             report.add(deptReport);
         }
-
         return report;
     }
 }

@@ -26,7 +26,7 @@ public class AuthService {
     public Map<String, Object> login(String username, String rawPassword) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new RuntimeException("User not found");
+            throw new RuntimeException("User not found with the username");
         }
 
         if (!user.isActive()) {
