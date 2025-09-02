@@ -19,7 +19,12 @@ const CreateEmployeeModal = ({ onHide, refresh }) => {
         validationSchema: Yup.object({
             username: Yup.string().min(6, "Mininum 6 characters required").required('Username is required'),
             email: Yup.string().email('Invalid email').required('Required'),
-            password: Yup.string().min(6, "Mininum 6 characters required").required('Password is required'),
+            password: Yup.string().min(6, "Minimum 6 characters required")
+                .matches(
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/,
+                    "Password must contain at least one uppercase letter, one lowercase letter, and a number"
+                )
+                .required("Password is required"),
             role: Yup.string().required('Required'),
         }),
         onSubmit: async (values) => {
