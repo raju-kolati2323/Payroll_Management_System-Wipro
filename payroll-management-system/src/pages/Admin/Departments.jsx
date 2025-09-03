@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const BASE_URL = 'http://localhost:8080/api/v1';
 const token = localStorage.getItem('token');
@@ -85,7 +86,7 @@ const Departments = () => {
       </div>
       <table className="table table-bordered">
         <thead className="table-light">
-          <tr>
+          <tr align="center">
             <th>S.No</th>
             <th>ID</th>
             <th>Name</th>
@@ -99,17 +100,13 @@ const Departments = () => {
             </tr>
           ) : (
             departments.map((dept, index) => (
-              <tr key={dept.department_id}>
+              <tr align="center" key={dept.department_id}>
                 <td>{index + 1}</td>
                 <td>{dept.department_id}</td>
                 <td>{dept.name}</td>
                 <td>
-                  <button className="btn btn-sm btn-warning me-2" onClick={() => openEditModal(dept)}>
-                    Edit
-                  </button>
-                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(dept.department_id)}>
-                    Delete
-                  </button>
+                  <button className="btn btn-sm btn-info me-2" onClick={() => openEditModal(dept)}><FaEdit /></button>
+                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(dept.department_id)}><FaTrash /></button>
                 </td>
               </tr>
             ))

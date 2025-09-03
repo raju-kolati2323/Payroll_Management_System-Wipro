@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import FormInput from '../../components/FormInput';
@@ -13,6 +13,26 @@ const CreateEmployeeModal = ({ onHide, refresh }) => {
     const [step, setStep] = useState(1);
     const [user, setUser] = useState(null);
     const [employeeId, setEmployeeId] = useState(null);
+    const [employeeSalary, setEmployeeSalary] = useState(null);
+    const [departments, setDepartments] = useState([]);
+    const [jobs, setJobs] = useState([]);
+
+    useEffect(() => {
+        const fetchMetaData = async () => {
+            try {
+                const [depRes, jobRes] = await Promise.all([
+                    axios.get(`${BASE_URL}/departments`, { headers }),
+                    axios.get(`${BASE_URL}/jobs`, { headers })
+                ]);
+                setDepartments(depRes.data);
+                setJobs(jobRes.data);
+            } catch (err) {
+                toast.error("Failed to load departments or jobs");
+            }
+        };
+        fetchMetaData();
+    }, []);
+
 
     const userFormik = useFormik({
         initialValues: { username: '', email: '', password: '', role: 'EMPLOYEE' },
@@ -23,8 +43,7 @@ const CreateEmployeeModal = ({ onHide, refresh }) => {
                 .matches(
                     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/,
                     "Password must contain at least one uppercase letter, one lowercase letter, and a number"
-                )
-                .required("Password is required"),
+                ).required("Password is required"),
             role: Yup.string().required('Required'),
         }),
         onSubmit: async (values) => {
@@ -67,13 +86,17 @@ const CreateEmployeeModal = ({ onHide, refresh }) => {
                 };
                 const { data } = await axios.post(`${BASE_URL}/employees`, payload, { headers });
                 setEmployeeId(data.employee_id);
-                setEmployeeId(data.employee_id);
+                setEmployeeSalary(data.salary);
                 salaryFormik.setFieldValue('employeeSalary', payload.salary);
                 setStep(3);
             } catch (error) {
                 toast.error(error.response?.data?.message);
             }
         }
+    });
+    const filteredJobs = jobs.filter(job => {
+        const selectedDept = departments.find(dept => dept.department_id === Number(empFormik.values.departmentId));
+        return job.departmentName === selectedDept?.name;
     });
 
     const salaryFormik = useFormik({
@@ -124,16 +147,40 @@ const CreateEmployeeModal = ({ onHide, refresh }) => {
                                 <form onSubmit={empFormik.handleSubmit}>
                                     <div className="mb-3">
                                         <label className="form-label fw-bold">User ID</label>
-                                        <input type="text" className="form-control" value={user || ''} readOnly disabled />
+                                        <input type="text" className="form-control" value={user} readOnly disabled />
                                     </div>
-                                    <input type="hidden" name="user_id" value={user || ''} readOnly />
+                                    <input type="hidden" name="user_id" value={user} readOnly />
                                     <FormInput label="First Name" name="first_name" formik={empFormik} />
                                     <FormInput label="Last Name" name="last_name" formik={empFormik} />
                                     <FormInput label="Date of Birth" name="dob" type="date" formik={empFormik} />
                                     <FormInput label="Phone" name="phone" formik={empFormik} />
                                     <FormInput label="Address" name="address" formik={empFormik} />
-                                    <FormInput label="Department ID" name="departmentId" formik={empFormik} />
-                                    <FormInput label="Designation" name="designation" formik={empFormik} />
+
+                                    <div className="mb-3">
+                                        <label className="form-label fw-bold">Department</label>
+                                        <select className="form-select" name="departmentId" value={empFormik.values.departmentId} onChange={empFormik.handleChange} onBlur={empFormik.handleBlur}>
+                                            <option value="">Select Department</option>
+                                            {departments.map((dept) => (
+                                                <option key={dept.department_id} value={dept.department_id}>{dept.name} </option>
+                                            ))}
+                                        </select>
+                                        {empFormik.touched.departmentId && empFormik.errors.departmentId && (
+                                            <div className="text-danger">{empFormik.errors.departmentId}</div>
+                                        )}
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label fw-bold">Designation</label>
+                                        <select className="form-select" name="designation" value={empFormik.values.designation} onChange={empFormik.handleChange} onBlur={empFormik.handleBlur}>
+                                            <option value="">Select Job Role</option>
+                                            {filteredJobs.map((job) => (
+                                                <option key={job.jobrole_id} value={job.jobrole}>{`${job.departmentName} - ${job.jobrole}`}</option>
+                                            ))}
+                                        </select>
+                                        {empFormik.touched.designation && empFormik.errors.designation && (
+                                            <div className="text-danger">{empFormik.errors.designation}</div>
+                                        )}
+                                    </div>
+
                                     <FormInput label="Salary (Monthly)" name="salary" type="number" formik={empFormik} />
                                     <button type="submit" className="btn btn-primary">Next</button>
                                 </form>
@@ -142,10 +189,14 @@ const CreateEmployeeModal = ({ onHide, refresh }) => {
                                 <form onSubmit={salaryFormik.handleSubmit}>
                                     <div className="mb-3">
                                         <label className="form-label fw-bold">Employee ID</label>
-                                        <input type="text" className="form-control" value={employeeId || ''} readOnly disabled />
+                                        <input type="text" className="form-control" value={employeeId} readOnly disabled />
                                     </div>
-                                    <input type="hidden" name="employee_id" value={employeeId || ''} readOnly />
-                                    <FormInput label="Employee Monthly Salary" name="employeeSalary" type="number" readOnly={true} formik={salaryFormik} />
+                                    <input type="hidden" name="employee_id" value={employeeId} readOnly />
+                                    <div className="mb-3">
+                                        <label className="form-label fw-bold">Employee Salary (Monthly)</label>
+                                        <input type="number" className="form-control" value={employeeSalary} readOnly disabled />
+                                    </div>
+                                    <input type="hidden" name="employeeSalary" value={employeeSalary} readOnly />
                                     <FormInput label="Paid Leaves (Yearly)" name="totalPaidLeavesPerYear" type="number" formik={salaryFormik} />
                                     <FormInput label="Tax %" name="taxPercentage" type="number" formik={salaryFormik} />
                                     <FormInput label="Deduction/Day" name="salaryDeductionPerDay" type="number" formik={salaryFormik} />

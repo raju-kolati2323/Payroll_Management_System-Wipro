@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const token = localStorage.getItem('token');
 const headers = { Authorization: `Bearer ${token}` };
@@ -104,7 +105,7 @@ const Jobs = () => {
       </div>
       <table className="table table-bordered table-striped">
         <thead>
-          <tr>
+          <tr align="center">
             <th>S.No</th>
             <th>Job Role ID</th>
             <th>Job Role</th>
@@ -117,18 +118,14 @@ const Jobs = () => {
             <tr><td colSpan="5" className="text-center">No jobs found</td></tr>
           ) : (
             jobs.map((job, idx) => (
-              <tr key={job.jobrole_id}>
+              <tr align="center" key={job.jobrole_id}>
                 <td>{idx + 1}</td>
                 <td>{job.jobrole_id}</td>
                 <td>{job.jobrole}</td>
                 <td>{job.departmentName}</td>
                 <td>
-                  <button className="btn btn-sm btn-warning me-2" onClick={() => openModal(job)}                  >
-                    Edit
-                  </button>
-                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(job.jobrole_id)}                  >
-                    Delete
-                  </button>
+                  <button className="btn btn-sm btn-info me-2" onClick={() => openModal(job)}><FaEdit /></button>
+                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(job.jobrole_id)}><FaTrash /></button>
                 </td>
               </tr>
             ))

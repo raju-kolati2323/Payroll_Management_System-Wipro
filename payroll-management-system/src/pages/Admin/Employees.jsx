@@ -3,7 +3,7 @@ import axios from 'axios';
 import CreateEmployeeModal from './CreateEmployeeModal';
 import EditEmployeeModal from './EditEmployeeModal';
 import { toast } from 'react-toastify';
-import { FaRegUserCircle } from 'react-icons/fa';
+import { FaEdit, FaEye, FaPencilAlt, FaRegUserCircle } from 'react-icons/fa';
 
 const token = localStorage.getItem('token');
 const headers = { Authorization: `Bearer ${token}` };
@@ -24,7 +24,9 @@ const Employees = () => {
     setFilteredEmployees(data);
   };
 
-  useEffect(() => { fetchEmployees(); }, []);
+  useEffect(() => { 
+    fetchEmployees(); 
+  }, []);
 
   useEffect(() => {
     if (search.trim() !== '') {
@@ -107,8 +109,8 @@ const Employees = () => {
                 </select>
               </td>
               <td>
-                <button className="btn btn-info btn-sm me-2" onClick={() => handleViewEmployee(emp.employee_id)}>View</button>
-                <button className="btn btn-warning btn-sm" onClick={() => handleEditEmployee(emp.employee_id)}>Edit</button>
+                <button className="btn btn-info btn-sm me-2" onClick={() => handleViewEmployee(emp.employee_id)}><FaEye /></button>
+                <button className="btn btn-warning btn-sm" onClick={() => handleEditEmployee(emp.employee_id)}><FaEdit /></button>
               </td>
             </tr>
           ))}

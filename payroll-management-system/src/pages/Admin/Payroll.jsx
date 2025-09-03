@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { FaLock } from 'react-icons/fa';
 
 const BASE_URL = 'http://localhost:8080/api/v1';
 const token = localStorage.getItem('token');
@@ -182,7 +183,7 @@ const Payroll = () => {
         </div>
         <div className="col-md-2">
           <label className="form-label">Employee ID</label>
-          <input type="number" className="form-control" value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} />
+          <input type="number" className="form-control" placeholder="Enter Employee Id" value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} />
         </div>
         <div className="col-md-3">
           <button className="btn btn-info w-100" onClick={handleGetSalaryStructure}>View Salary Structure</button>
@@ -206,7 +207,7 @@ const Payroll = () => {
               <td>{r.locked ? 'Yes' : 'No'}</td>
               <td>
                 <button className="btn btn-sm btn-success me-2" onClick={() => processRun(r.id)} disabled={r.locked}>Process</button>
-                <button className="btn btn-sm btn-warning me-2" onClick={() => lockRun(r.id)} disabled={r.locked}>Lock</button>
+                <button className="btn btn-sm btn-warning me-2" onClick={() => lockRun(r.id)} disabled={r.locked}><FaLock /></button>
                 <button className="btn btn-sm btn-info" onClick={() => viewItems(r.id)}>View Items</button>
               </td>
             </tr>
@@ -292,7 +293,7 @@ const Payroll = () => {
           <ul className="list-group">
             {Object.entries(departmentCosts).map(([deptId, cost]) => (
               <li key={deptId} className="list-group-item d-flex justify-content-between">
-                <span><strong>Department ID:</strong> {deptId}</span>
+                <span><strong>Department:</strong> {deptId}</span>
                 <span><strong>Cost:</strong> &#8377;{cost.toLocaleString()}</span>
               </li>
             ))}
